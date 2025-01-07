@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\..\book\book.proto" Link="Protos\book.proto" />
+
+    <PackageReference Include="Google.Protobuf" Version="3.29.2" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="All" Version="2.68.1" />
+  </ItemGroup>
+
+</Project>
