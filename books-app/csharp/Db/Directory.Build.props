@@ -1,0 +1,6 @@
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- 
+    This file must exist in the project folder in order to override the solution level Directory.Build.props file.
+    Otherwise, the changes to the ArtifactsPath breaks the `dotnet ef migrations add` command.
+   -->
+</Project>

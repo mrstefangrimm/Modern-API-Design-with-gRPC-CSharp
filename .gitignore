@@ -1,4 +1,6 @@
-*/build/out/
-/chapter-2/csharp/.vs
-/chapter-4/csharp/.vs
-/.vs
+*/build/out
+**/.vs
+**/artifacts
+/books-app/csharp/Db/bin
+/books-app/csharp/Db/obj
+*csproj.user
