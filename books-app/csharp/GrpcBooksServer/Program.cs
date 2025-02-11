@@ -17,8 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc(options => {
   // book, section: Implementing a logging interceptor
   options.Interceptors.Add<LoggingInterceptor>();
+  options.Interceptors.Add<UniqueExceptionInterceptor>();
 });
-
 
 builder.Services.AddDbContext<BookDbContext>();
 
@@ -28,4 +28,3 @@ var app = builder.Build();
 app.MapGrpcService<GrpcBooksService>();
 
 app.Run();
-

@@ -35,8 +35,7 @@ public class LoggingInterceptor : Interceptor
     {
       // Note: The gRPC framework also logs exceptions thrown by handlers to .NET logging.
       _logger.LogCritical(ex, $"Error thrown by {context.Method}.");
-
-      throw new RpcException(new Status(StatusCode.Aborted, ex.Message, ex));
+      throw;
     }
   }
 
