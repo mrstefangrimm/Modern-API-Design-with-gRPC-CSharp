@@ -17,7 +17,7 @@ public class LoggingInterceptor : Interceptor
   {
     _logger = logger;
   }
-
+  
   public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(TRequest request, ServerCallContext context, UnaryServerMethod<TRequest, TResponse> continuation)
   {
     try
@@ -35,7 +35,8 @@ public class LoggingInterceptor : Interceptor
     {
       // Note: The gRPC framework also logs exceptions thrown by handlers to .NET logging.
       _logger.LogCritical(ex, $"Error thrown by {context.Method}.");
-      throw;
+
+      throw new RpcException(new Status(StatusCode.Aborted, ex.Message, ex));
     }
   }
 

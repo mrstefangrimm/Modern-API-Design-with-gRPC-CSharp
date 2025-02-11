@@ -1,9 +1,33 @@
+using Grpc.Core;
 using Grpc.Net.Client;
 using Prot;
 using System;
+using System.Threading.Tasks;
 
 using var channel = GrpcChannel.ForAddress("https://localhost:5001");
 var client = new BookService.BookServiceClient(channel);
+
+// Not in the book. Error handling
+var invalidArgumentBook = new Book {
+  Isbn = 12345,
+  Name = "",
+  Publisher = "random house business books"
+};
+var res = await ExceptionExtension.CallWithTryCatchAsync<Book, AddBookResponse>(arg => {
+  return client.AddBookAsync(arg);
+}, invalidArgumentBook);
+
+Console.WriteLine($"Invalid argument book returned '{res}'");
+
+// Not in the book. recovery implementation when the server crashes, not implemented.
+//var serverCrashingBook = new Book {
+//  Isbn = 0,
+//  Name = "atomic habits",
+//  Publisher = "random house business books"
+//};
+//_ = await ExceptionExtension.CallWithTryCatchAsync<Book, AddBookResponse>(arg => {
+//  return client.AddBookAsync(arg);
+//}, serverCrashingBook);
 
 var book = new Book {
   Isbn = 12345,
@@ -42,3 +66,31 @@ await client.RemoveBookAsync(new RemoveBookRequest { Isbn = 12345 });
 Console.WriteLine("Shutting down");
 Console.WriteLine("Press any key to exit...");
 Console.ReadKey();
+
+public static class ExceptionExtension
+{
+  public static TResponse CallWithTryCatch<TRequest, TResponse>(Func<TRequest, TResponse> rpcCall, TRequest arg)
+  {
+    try
+    {
+      return rpcCall(arg);
+    }
+    catch (RpcException rpcEx)
+    {
+      return default(TResponse);
+    }
+  }
+
+  public static async Task<TResponse> CallWithTryCatchAsync<TRequest, TResponse>(Func<TRequest, AsyncUnaryCall<TResponse>> rpcCallAsync, TRequest arg)
+  {
+    try
+    {
+      var result = await rpcCallAsync(arg);
+      return result;
+    }
+    catch (RpcException rpcEx)
+    {
+      return default(TResponse);
+    }
+  }
+}
