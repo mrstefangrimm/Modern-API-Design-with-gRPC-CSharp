@@ -1,4 +1,5 @@
 using Grpc.Net.Client;
+using GrpcBooksClient.Interceptors;
 using Prot;
 using System;
 
@@ -28,7 +29,7 @@ Console.WriteLine($"Invalid argument book returned '{res}'");
 //}, serverCrashingBook);
 
 var book = new Book {
-  Isbn = 12345,
+  Isbn = 12348,
   Name = "atomic habits",
   Publisher = "random house business books"
 };
@@ -56,10 +57,10 @@ if (found)
 book.Name = "atomic habits vol-2";
 await client.UpdateBookAsync(book);
 
-var updatedBook = await client.GetBookAsync(new GetBookRequest { Isbn = 12345 });
+var updatedBook = await client.GetBookAsync(new GetBookRequest { Isbn = 12348 });
 Console.WriteLine($"Isbn:{updatedBook.Isbn}, Name:{updatedBook.Name}, Publisher:{updatedBook.Publisher}");
 
-await client.RemoveBookAsync(new RemoveBookRequest { Isbn = 12345 });
+await client.RemoveBookAsync(new RemoveBookRequest { Isbn = 12348 });
 
 Console.WriteLine("Shutting down");
 Console.WriteLine("Press any key to exit...");
