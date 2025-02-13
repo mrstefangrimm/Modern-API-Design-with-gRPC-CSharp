@@ -1,9 +1,32 @@
 using Grpc.Net.Client;
+using GrpcBooksClient.Interceptors;
 using Prot;
 using System;
 
 using var channel = GrpcChannel.ForAddress("https://localhost:5001");
 var client = new BookService.BookServiceClient(channel);
+
+// Not in the book. Error handling
+var invalidArgumentBook = new Book {
+  Isbn = 12345,
+  Name = "",
+  Publisher = "random house business books"
+};
+var res = await ExceptionExtension.CallWithTryCatchAsync<Book, AddBookResponse>(arg => {
+  return client.AddBookAsync(arg);
+}, invalidArgumentBook);
+
+Console.WriteLine($"Invalid argument book returned '{res}'");
+
+// Not in the book. recovery implementation when the server crashes, not implemented.
+//var serverCrashingBook = new Book {
+//  Isbn = 0,
+//  Name = "atomic habits",
+//  Publisher = "random house business books"
+//};
+//_ = await ExceptionExtension.CallWithTryCatchAsync<Book, AddBookResponse>(arg => {
+//  return client.AddBookAsync(arg);
+//}, serverCrashingBook);
 
 var book = new Book {
   Isbn = 12348,

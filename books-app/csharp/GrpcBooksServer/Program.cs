@@ -1,13 +1,9 @@
 using Db;
 using GrpcBooksServer;
+using GrpcBooksServer.Interceptors;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Repo;
-using System;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +14,11 @@ var builder = WebApplication.CreateBuilder(args);
 //  });
 //});
 
-builder.Services.AddGrpc();
-
+builder.Services.AddGrpc(options => {
+  // book, section: Implementing a logging interceptor
+  options.Interceptors.Add<LoggingInterceptor>();
+  options.Interceptors.Add<UniqueExceptionInterceptor>();
+});
 
 builder.Services.AddDbContext<BookDbContext>();
 
@@ -29,4 +28,3 @@ var app = builder.Build();
 app.MapGrpcService<GrpcBooksService>();
 
 app.Run();
-
