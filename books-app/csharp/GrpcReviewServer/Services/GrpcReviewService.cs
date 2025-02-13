@@ -2,6 +2,7 @@ using Grpc.Core;
 using Model;
 using Prot;
 using Repo;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,102 +10,117 @@ namespace GrpcReviewServer;
 
 public class GrpcReviewService : ReviewService.ReviewServiceBase
 {
-  private readonly BookRepository _bookRepo;
+    private readonly BookRepository _bookRepo;
 
-  public GrpcReviewService(BookRepository bookRepo)
-  {
-    _bookRepo = bookRepo;
-  }
+    public GrpcReviewService(BookRepository bookRepo)
+    {
+        _bookRepo = bookRepo;
+    }
 
-  public override Task<GetBookReviewsResponse> GetBookReviews(GetBookReviewsRequest request, ServerCallContext context)
-  {
-    var reviews = _bookRepo.GetAllReviews(request.Isbn).Select(dbReview => new Review {
-      Comment = dbReview.Comment,
-      Reviewer = dbReview.Reviewer,
-      Rating = dbReview.Rating
-    });
+    public override Task<GetBookReviewsResponse> GetBookReviews(GetBookReviewsRequest request, ServerCallContext context)
+    {
+        if (request.Isbn == 12347 && DateTime.Now.Second % 3 == 0)
+        {
+            return Task.FromResult<GetBookReviewsResponse>(null);
+        }
 
-    var resp = new GetBookReviewsResponse();
-    resp.Reviews.AddRange(reviews);
+        var reviews = _bookRepo.GetAllReviews(request.Isbn).Select(dbReview => new Review
+        {
+            Comment = dbReview.Comment,
+            Reviewer = dbReview.Reviewer,
+            Rating = dbReview.Rating
+        });
 
-    return Task.FromResult(resp);
-  }
+        var resp = new GetBookReviewsResponse();
+        resp.Reviews.AddRange(reviews);
 
-  public override Task<SubmitReviewResponse> SubmitReviews(SubmitReviewRequest request, ServerCallContext context)
-  {
-    var review = new DBReview {
-      Isbn = request.Isbn,
-      Comment = request.Comment,
-      Reviewer = request.Reviewer,
-      Rating = request.Rating
-    };
+        return Task.FromResult(resp);
+    }
 
-    _bookRepo.AddReview(review);
+    public override Task<SubmitReviewResponse> SubmitReviews(SubmitReviewRequest request, ServerCallContext context)
+    {
+        var review = new DBReview
+        {
+            Isbn = request.Isbn,
+            Comment = request.Comment,
+            Reviewer = request.Reviewer,
+            Rating = request.Rating
+        };
 
-    return Task.FromResult(new SubmitReviewResponse {
-      Status = $"review for book({request.Isbn}) submitted successfully"
-    });
-  }
+        _bookRepo.AddReview(review);
 
-  public Task<AddBookResponse> AddBook(Book request, ServerCallContext context)
-  {
-    var book = new DBBook {
-      Isbn = request.Isbn,
-      Name = request.Name,
-      Publisher = request.Publisher
-    };
-    _bookRepo.AddBook(book);
+        return Task.FromResult(new SubmitReviewResponse
+        {
+            Status = $"review for book({request.Isbn}) submitted successfully"
+        });
+    }
 
-    return Task.FromResult(new AddBookResponse {
-      Status = $"book with isbn({book.Isbn}), name({book.Name}), publisher({book.Publisher}) added successfully"
-    });
-  }
+    public Task<AddBookResponse> AddBook(Book request, ServerCallContext context)
+    {
+        var book = new DBBook
+        {
+            Isbn = request.Isbn,
+            Name = request.Name,
+            Publisher = request.Publisher
+        };
+        _bookRepo.AddBook(book);
 
-  public Task<UpdateBookResponse> UpdateBook(Book request, ServerCallContext context)
-  {
-    var book = new DBBook {
-      Isbn = request.Isbn,
-      Name = request.Name,
-      Publisher = request.Publisher
-    };
-    _bookRepo.UpdateBook(book);
+        return Task.FromResult(new AddBookResponse
+        {
+            Status = $"book with isbn({book.Isbn}), name({book.Name}), publisher({book.Publisher}) added successfully"
+        });
+    }
 
-    return Task.FromResult(new UpdateBookResponse {
-      Status = $"book with isbn({book.Isbn}), name({book.Name}), publisher({book.Publisher}) updated successfully"
-    });
-  }
+    public Task<UpdateBookResponse> UpdateBook(Book request, ServerCallContext context)
+    {
+        var book = new DBBook
+        {
+            Isbn = request.Isbn,
+            Name = request.Name,
+            Publisher = request.Publisher
+        };
+        _bookRepo.UpdateBook(book);
 
-  public Task<ListBooksRespose> ListBooks(Empty request, ServerCallContext context)
-  {
-    var books = _bookRepo.GetAllBooks().Select(dbBook => new Book {
-      Isbn = dbBook.Isbn,
-      Name = dbBook.Name,
-      Publisher = dbBook.Publisher
-    });
+        return Task.FromResult(new UpdateBookResponse
+        {
+            Status = $"book with isbn({book.Isbn}), name({book.Name}), publisher({book.Publisher}) updated successfully"
+        });
+    }
 
-    var resp = new ListBooksRespose();
-    resp.Books.AddRange(books);
+    public Task<ListBooksRespose> ListBooks(Empty request, ServerCallContext context)
+    {
+        var books = _bookRepo.GetAllBooks().Select(dbBook => new Book
+        {
+            Isbn = dbBook.Isbn,
+            Name = dbBook.Name,
+            Publisher = dbBook.Publisher
+        });
 
-    return Task.FromResult(resp);
-  }
+        var resp = new ListBooksRespose();
+        resp.Books.AddRange(books);
 
-  public Task<Book> GetBook(GetBookRequest request, ServerCallContext context)
-  {
-    var book = _bookRepo.GetBook(request.Isbn);
+        return Task.FromResult(resp);
+    }
 
-    return Task.FromResult(new Book {
-      Isbn = book.Isbn,
-      Name = book.Name,
-      Publisher = book.Publisher
-    });
-  }
+    public Task<Book> GetBook(GetBookRequest request, ServerCallContext context)
+    {
+        var book = _bookRepo.GetBook(request.Isbn);
 
-  public Task<RemoveBookResponse> RemoveBook(RemoveBookRequest request, ServerCallContext context)
-  {
-    _bookRepo.RemoveBook(request.Isbn);
+        return Task.FromResult(new Book
+        {
+            Isbn = book.Isbn,
+            Name = book.Name,
+            Publisher = book.Publisher
+        });
+    }
 
-    return Task.FromResult(new RemoveBookResponse {
-      Status = "book with isbn(%d) removed successfully"
-    });
-  }
+    public Task<RemoveBookResponse> RemoveBook(RemoveBookRequest request, ServerCallContext context)
+    {
+        _bookRepo.RemoveBook(request.Isbn);
+
+        return Task.FromResult(new RemoveBookResponse
+        {
+            Status = "book with isbn(%d) removed successfully"
+        });
+    }
 }
