@@ -2,6 +2,7 @@ using Grpc.Core;
 using Model;
 using Prot;
 using Repo;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,11 +19,24 @@ public class GrpcBooksService : BookService.BookServiceBase
 
   public override Task<AddBookResponse> AddBook(Book request, ServerCallContext context)
   {
+    // Not in the book. Error handling
+    if (string.IsNullOrEmpty(request.Name))
+    {
+      throw new RpcException(new Status(StatusCode.InvalidArgument, "Name is required."));
+    }
+
+    // Implementing recovery interceptor, not implemented
+    if (request.Isbn == 0)
+    {
+      Environment.Exit(-1);
+    }
+
     var book = new DBBook {
       Isbn = request.Isbn,
       Name = request.Name,
       Publisher = request.Publisher
     };
+
     _bookRepo.AddBook(book);
 
     return Task.FromResult(new AddBookResponse {
