@@ -1,8 +1,6 @@
 using Grpc.Core;
 using Model;
 using Prot;
-using Repo;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace GrpcBookInfoServer;

@@ -1,0 +1,8 @@
+start BookServer.exe
+start ReviewServer.exe
+start GrpcBookInfoServer.exe
+
+
+grpcurl -d '{ "isbn":12347, "name":"modern api desing using grpc", "publisher":"ava orange" }' localhost:5001 prot.BookService/AddBook
+grpcurl -d '{ "isbn":12347, "reviewer":"reviewer-7231", "comment":"practical book", "rating": 4 }' localhost:5101 prot.ReviewService/SubmitReviews
+grpcurl -d '{ "isbn":12347 }' localhost:5201 prot.BookInfoService.GetBookInfoWithReviews
