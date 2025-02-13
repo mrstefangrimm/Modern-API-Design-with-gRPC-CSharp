@@ -120,7 +120,7 @@ public class GrpcReviewService : ReviewService.ReviewServiceBase
 
         return Task.FromResult(new RemoveBookResponse
         {
-            Status = "book with isbn(%d) removed successfully"
+            Status = $"book with isbn({request.Isbn}) removed successfully"
         });
     }
 }
