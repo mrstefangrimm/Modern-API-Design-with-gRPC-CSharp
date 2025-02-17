@@ -10,11 +10,13 @@ public class GrpcBookInfoService : BookInfoService.BookInfoServiceBase
 {
     private readonly BookService.BookServiceClient _bookServerClient;
     private readonly ReviewService.ReviewServiceClient _reviewServerClient;
+    private readonly CircuitBreaker _circuitBreaker;
 
-    public GrpcBookInfoService(BookService.BookServiceClient bookServerClient, ReviewService.ReviewServiceClient reviewServerClient)
+    public GrpcBookInfoService(BookService.BookServiceClient bookServerClient, ReviewService.ReviewServiceClient reviewServerClient, CircuitBreaker circuitBreaker)
     {
         _bookServerClient = bookServerClient;
         _reviewServerClient = reviewServerClient;
+        _circuitBreaker = circuitBreaker;
     }
 
     public override Task<GetBookInfoResponse> GetBookInfoWithReviews(GetBookInfoRequest request, ServerCallContext context)
@@ -33,7 +35,10 @@ public class GrpcBookInfoService : BookInfoService.BookInfoServiceBase
             return (book, reviewResp);
         };
 
-        var retryResp = retry.WithRetry(3, TimeSpan.FromSeconds(2));
+        var retryResp = _circuitBreaker.Execute<(Book, GetBookReviewsResponse)>(() =>
+        {
+            return retry.WithRetry(3, TimeSpan.FromSeconds(2));
+        });
 
         var resp = new GetBookInfoResponse
         {

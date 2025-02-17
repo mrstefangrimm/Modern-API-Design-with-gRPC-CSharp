@@ -1,10 +1,13 @@
+
+# Perpare
+
 start BookServer.exe
 start ReviewServer.exe
 start GrpcBookInfoServer.exe
 
-
 grpcurl -d '{ "isbn":12347, "name":"modern api desing using grpc", "publisher":"ava orange" }' localhost:5001 prot.BookService/AddBook
 grpcurl -d '{ "isbn":12347, "reviewer":"reviewer-7231", "comment":"practical book", "rating": 4 }' localhost:5101 prot.ReviewService/SubmitReviews
 
-// timeout
+// Test, intermittent results for the book with isbn 12347: StatusCode:DeadlineExceeded from BookServer, StatusCode:Cancelled from ReviewServer.
+// 3 retries. A circuit breaker will break the ciruit for 5 seconds.
 grpcurl -d '{ "isbn":12347 }' localhost:5201 prot.BookInfoService.GetBookInfoWithReviews
