@@ -4,91 +4,107 @@ using Prot;
 using Repo;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GrpcBooksServer;
 
 public class GrpcBooksService : BookService.BookServiceBase
 {
-  private readonly BookRepository _bookRepo;
+    private readonly BookRepository _bookRepo;
 
-  public GrpcBooksService(BookRepository bookRepo)
-  {
-    _bookRepo = bookRepo;
-  }
-
-  public override Task<AddBookResponse> AddBook(Book request, ServerCallContext context)
-  {
-    // Not in the book. Error handling
-    if (string.IsNullOrEmpty(request.Name))
+    public GrpcBooksService(BookRepository bookRepo)
     {
-      throw new RpcException(new Status(StatusCode.InvalidArgument, "Name is required."));
+        _bookRepo = bookRepo;
     }
 
-    // Implementing recovery interceptor, not implemented
-    if (request.Isbn == 0)
+    public override Task<AddBookResponse> AddBook(Book request, ServerCallContext context)
     {
-      Environment.Exit(-1);
+
+        // Not in the book. Error handling
+        if (string.IsNullOrEmpty(request.Name))
+        {
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Name is required."));
+        }
+
+        // Implementing recovery interceptor, not implemented
+        if (request.Isbn == 0)
+        {
+            Environment.Exit(-1);
+        }
+
+        var book = new DBBook
+        {
+            Isbn = request.Isbn,
+            Name = request.Name,
+            Publisher = request.Publisher
+        };
+
+        _bookRepo.AddBook(book);
+
+        return Task.FromResult(new AddBookResponse
+        {
+            Status = $"book with isbn({book.Isbn}), name({book.Name}), publisher({book.Publisher}) added successfully"
+        });
     }
 
-    var book = new DBBook {
-      Isbn = request.Isbn,
-      Name = request.Name,
-      Publisher = request.Publisher
-    };
+    public override Task<UpdateBookResponse> UpdateBook(Book request, ServerCallContext context)
+    {
+        var book = new DBBook
+        {
+            Isbn = request.Isbn,
+            Name = request.Name,
+            Publisher = request.Publisher
+        };
+        _bookRepo.UpdateBook(book);
 
-    _bookRepo.AddBook(book);
+        return Task.FromResult(new UpdateBookResponse
+        {
+            Status = $"book with isbn({book.Isbn}), name({book.Name}), publisher({book.Publisher}) updated successfully"
+        });
+    }
 
-    return Task.FromResult(new AddBookResponse {
-      Status = $"book with isbn({book.Isbn}), name({book.Name}), publisher({book.Publisher}) added successfully"
-    });
-  }
+    public override Task<ListBooksRespose> ListBooks(Empty request, ServerCallContext context)
+    {
+        var books = _bookRepo.GetAllBooks().Select(dbBook => new Book
+        {
+            Isbn = dbBook.Isbn,
+            Name = dbBook.Name,
+            Publisher = dbBook.Publisher
+        });
 
-  public override Task<UpdateBookResponse> UpdateBook(Book request, ServerCallContext context)
-  {
-    var book = new DBBook {
-      Isbn = request.Isbn,
-      Name = request.Name,
-      Publisher = request.Publisher
-    };
-    _bookRepo.UpdateBook(book);
+        var resp = new ListBooksRespose();
+        resp.Books.AddRange(books);
 
-    return Task.FromResult(new UpdateBookResponse {
-      Status = $"book with isbn({book.Isbn}), name({book.Name}), publisher({book.Publisher}) updated successfully"
-    });
-  }
+        return Task.FromResult(resp);
+    }
 
-  public override Task<ListBooksRespose> ListBooks(Empty request, ServerCallContext context)
-  {
-    var books = _bookRepo.GetAllBooks().Select(dbBook => new Book {
-      Isbn = dbBook.Isbn,
-      Name = dbBook.Name,
-      Publisher = dbBook.Publisher
-    });
+    public override Task<Book> GetBook(GetBookRequest request, ServerCallContext context)
+    {
 
-    var resp = new ListBooksRespose();
-    resp.Books.AddRange(books);
+        // Resilience, mitigating with timeout
+        if (request.Isbn == 12347 && DateTime.Now.Second % 4 == 0)
+        {
+            Thread.Sleep(3000);
+        }
 
-    return Task.FromResult(resp);
-  }
+        var book = _bookRepo.GetBook(request.Isbn);
 
-  public override Task<Book> GetBook(GetBookRequest request, ServerCallContext context)
-  {
-    var book = _bookRepo.GetBook(request.Isbn);
+        return Task.FromResult(new Book
+        {
+            Isbn = book.Isbn,
+            Name = book.Name,
+            Publisher = book.Publisher
+        });
+    }
 
-    return Task.FromResult(new Book {
-      Isbn = book.Isbn,
-      Name = book.Name,
-      Publisher = book.Publisher
-    });
-  }
+    public override Task<RemoveBookResponse> RemoveBook(RemoveBookRequest request, ServerCallContext context)
+    {
+        _bookRepo.RemoveBook(request.Isbn);
 
-  public override Task<RemoveBookResponse> RemoveBook(RemoveBookRequest request, ServerCallContext context)
-  {
-    _bookRepo.RemoveBook(request.Isbn);
-
-    return Task.FromResult(new RemoveBookResponse {
-      Status = "book with isbn(%d) removed successfully"
-    });
-  }
+        return Task.FromResult(new RemoveBookResponse
+        {
+            Status = "book with isbn(%d) removed successfully"
+        });
+    }
 }

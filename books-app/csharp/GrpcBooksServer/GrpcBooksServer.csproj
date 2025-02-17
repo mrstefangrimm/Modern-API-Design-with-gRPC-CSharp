@@ -8,7 +8,8 @@
     <Protobuf Include="..\..\internal\pkg\proto\book.proto" GrpcServices="GrpcBooksServer" Link="Protos\book.proto" />
 
     <PackageReference Include="Google.Protobuf" Version="3.28.3" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.66.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.67.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.67.0" /> <!-- Used by grpcurl -->
 
     <PackageReference Include="Grpc.Tools" Version="2.67.0">
       <PrivateAssets>all</PrivateAssets>
