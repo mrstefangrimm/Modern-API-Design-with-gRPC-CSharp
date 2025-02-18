@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcBooksBasicAuthServer", "GrpcBooksBasicAuthServer\GrpcBooksBasicAuthServer.csproj", "{D897C871-886A-4072-8C89-B402341BA735}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcBooksBasicAuthClient", "GrpcBooksBasicAuthClient\GrpcBooksBasicAuthClient.csproj", "{9CCBF51F-78E4-411D-A20D-92D74609E501}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D897C871-886A-4072-8C89-B402341BA735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D897C871-886A-4072-8C89-B402341BA735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D897C871-886A-4072-8C89-B402341BA735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D897C871-886A-4072-8C89-B402341BA735}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CCBF51F-78E4-411D-A20D-92D74609E501}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CCBF51F-78E4-411D-A20D-92D74609E501}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CCBF51F-78E4-411D-A20D-92D74609E501}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CCBF51F-78E4-411D-A20D-92D74609E501}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
