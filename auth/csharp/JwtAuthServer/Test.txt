@@ -1,0 +1,3 @@
+start JwtAutServer.exe
+
+grpcurl -d '{ "username":"uname", "password":"safePass" }' localhost:5101 prot.AuthService.Login
