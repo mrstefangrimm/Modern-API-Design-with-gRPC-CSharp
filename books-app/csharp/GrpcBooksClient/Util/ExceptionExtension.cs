@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace GrpcBooksClient.Interceptors;
+namespace Util;
 
 public static class ExceptionExtension
 {

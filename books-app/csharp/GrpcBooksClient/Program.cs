@@ -1,5 +1,4 @@
 using Grpc.Net.Client;
-using GrpcBooksClient.Interceptors;
 using Prot;
 using System;
 

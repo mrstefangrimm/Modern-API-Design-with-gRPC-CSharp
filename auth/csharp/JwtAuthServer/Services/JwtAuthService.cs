@@ -1,10 +1,11 @@
+using Config;
 using Grpc.Core;
 using Microsoft.IdentityModel.Tokens;
 using Prot;
+using Repo;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GrpcJwtAuthServer;
@@ -12,30 +13,50 @@ namespace GrpcJwtAuthServer;
 public class JwtAuthService : AuthService.AuthServiceBase
 {
     private static readonly JwtSecurityTokenHandler JwtTokenHandler = new JwtSecurityTokenHandler();
-    private static readonly SymmetricSecurityKey SecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("long-secret-is-required-256-minimum"));
+    private readonly IUserStore _userStore;
+
+    public JwtAuthService(IUserStore userStore)
+    {
+        _userStore = userStore;
+    }
 
     public override Task<LoginResponse> Login(LoginRequest request, ServerCallContext context)
     {
-        return Task.FromResult(new LoginResponse
+        try
         {
-            AccessToken = GenerateJwtToken(request.Username)
-        });
+            var user = _userStore.Find(request.Username);
+            if (user == null)
+            {
+                throw new RpcException(new Status(StatusCode.Unauthenticated, $"Cannot find user {request.Username}."));
+            }
+
+            if (!user.IsCorrectPassword(request.Password))
+            {
+                throw new RpcException(new Status(StatusCode.Unauthenticated, "Invalid username or password."));
+            }
+
+            return Task.FromResult(new LoginResponse
+            {
+                AccessToken = GenerateJwtToken(user.Username, user.Role)
+            });
+        }
+        catch (Exception)
+        {
+            throw new RpcException(new Status(StatusCode.Unauthenticated, "Login failed."));
+        }
     }
 
-    private static string GenerateJwtToken(string name)
+    private static string GenerateJwtToken(string name, string role)
     {
-        if (string.IsNullOrEmpty(name))
-        {
-            throw new InvalidOperationException("Name is not specified.");
-        }
+        ArgumentException.ThrowIfNullOrEmpty(name);
 
-        var claims = new[] { new Claim(ClaimTypes.Name, name) };
-        var credentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256);
+        var claims = new[] { new Claim(ClaimTypes.Name, name), new Claim(ClaimTypes.Role, role) };
+        var credentials = new SigningCredentials(Configs.SecurityKey, SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(
             issuer: null,
             audience: null,
             claims,
-            expires: DateTime.Now.AddMinutes(15),
+            expires: DateTime.Now.Add(Configs.TokenDuration),
             signingCredentials: credentials);
         return JwtTokenHandler.WriteToken(token);
     }

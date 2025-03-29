@@ -1,4 +1,5 @@
 using GrpcBooksServer;
+using Interceptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,11 +7,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 
-SymmetricSecurityKey SecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("long-secret-is-required-256-minimum"));
+SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes("long-secret-is-required-256-minimum"));
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(options =>
+{
+    options.Interceptors.Add<AuthInterceptor>();
+});
 builder.Services.AddGrpcReflection();
 builder.Services.AddAuthorization(options =>
 {
@@ -30,10 +34,9 @@ builder.Services.AddAuthentication()
                 ValidateIssuer = false,
                 ValidateActor = false,
                 ValidateLifetime = true,
-                IssuerSigningKey = SecurityKey
+                IssuerSigningKey = securityKey
             };
     });
-
 
 var app = builder.Build();
 

@@ -1,6 +1,6 @@
 
 start JwtAutServer.exe
-grpcurl -d '{ "username":"uname", "password":"safePass" }' localhost:5101 prot.AuthService.Login
+grpcurl -d '{ "username":"admin1", "password":"12345" }' localhost:5101 prot.AuthService.Login
 => eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidW5hbWUyIiwiZXhwIjoxNzQxNjI2OTk1fQ.H9BE9G4aXgI6tdDK0UOUB8UoCxM9HpZXjP6TXYX0FNw
 
 Start BooksJwtAuthServer.exe
