@@ -16,7 +16,10 @@ builder.WebHost.ConfigureKestrel(kestrelOptions =>
         {
             // Certificate validation logic here
             // Return true if the certificate is valid or false if it is invalid
-            return policyErrors == System.Net.Security.SslPolicyErrors.None && cert.Issuer.Contains("CN=localhost client cert");
+
+            var localClientCert = X509CertificateLoader.LoadCertificateFromFile(@"Cert\client.pfx");
+
+            return policyErrors == System.Net.Security.SslPolicyErrors.None && cert.Thumbprint == localClientCert.Thumbprint;
         };
     });
 });

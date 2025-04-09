@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
 
 var handler = new HttpClientHandler();
-var clientCertificate = X509CertificateLoader.LoadPkcs12FromFile("client.pfx", "grpc");
+var clientCertificate = X509CertificateLoader.LoadPkcs12FromFile(@"Certs\client.pfx", "grpc");
 handler.ClientCertificates.Add(clientCertificate);
 
 var channelOptions = new GrpcChannelOptions
