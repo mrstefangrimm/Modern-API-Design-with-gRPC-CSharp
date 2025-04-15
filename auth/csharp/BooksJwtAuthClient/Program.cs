@@ -20,6 +20,10 @@ var channelOptions = new GrpcChannelOptions
         }
     }
 };
+// Optional to channelOptions
+// var headers = new Metadata();
+// headers.Add("Authorization", $"Bearer {loginResponse.AccessToken}");
+// client.GetBookAsync(new GetBookRequest { Isbn = 123456 }, headers);
 
 using var channel = GrpcChannel.ForAddress("https://localhost:5001", channelOptions);
 var client = new BookService.BookServiceClient(channel);
