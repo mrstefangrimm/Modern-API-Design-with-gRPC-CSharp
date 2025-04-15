@@ -1,6 +1,7 @@
 using Grpc.Net.Client;
 using Prot;
 using System;
+using Util;
 
 using var channel = GrpcChannel.ForAddress("https://localhost:5001");
 var client = new BookService.BookServiceClient(channel);
