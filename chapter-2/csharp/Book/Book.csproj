@@ -8,8 +8,8 @@
   <ItemGroup>
     <Protobuf Include="..\..\book\book.proto" Link="Protos\book.proto" />
 
-    <PackageReference Include="Google.Protobuf" Version="3.29.2" />
-    <PackageReference Include="Grpc.Tools" PrivateAssets="All" Version="2.68.1" />
+    <PackageReference Include="Google.Protobuf" Version="3.30.2" />
+    <PackageReference Include="Grpc.Tools" PrivateAssets="All" Version="2.71.0" />
   </ItemGroup>
 
 </Project>
