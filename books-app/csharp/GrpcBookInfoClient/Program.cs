@@ -8,7 +8,7 @@ var client = new BookInfoService.BookInfoServiceClient(GrpcChannel.ForAddress("h
 
 // 12347 sometimes fails, sometime passes
 // var resp = await client.GetBookInfoWithReviewsAsync(new GetBookInfoRequest { Isbn = 12347 });
-var resp = await client.GetBookInfoWithReviewsAsync(new GetBookInfoRequest { Isbn = 12348 });
+var resp = await client.GetBookInfoWithReviewsAsync(new GetBookInfoRequest { Isbn = 12346 });
 
 Console.WriteLine($"Isbn:{resp.Isbn}, Name:{resp.Name}, Publisher:{resp.Publisher}");
 
