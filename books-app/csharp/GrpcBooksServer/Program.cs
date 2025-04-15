@@ -3,7 +3,6 @@ using GrpcBooksServer;
 using GrpcBooksServer.Interceptors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Repo;
 
 var builder = WebApplication.CreateBuilder(args);

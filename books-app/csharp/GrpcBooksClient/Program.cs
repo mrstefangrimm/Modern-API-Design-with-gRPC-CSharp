@@ -6,13 +6,15 @@ using var channel = GrpcChannel.ForAddress("https://localhost:5001");
 var client = new BookService.BookServiceClient(channel);
 
 // Not in the book. Error handling
-var invalidArgumentBook = new Book {
-  Isbn = 12345,
-  Name = "",
-  Publisher = "random house business books"
+var invalidArgumentBook = new Book
+{
+    Isbn = 12345,
+    Name = "",
+    Publisher = "random house business books"
 };
-var res = await ExceptionExtension.CallWithTryCatchAsync<Book, AddBookResponse>(arg => {
-  return client.AddBookAsync(arg);
+var res = await ExceptionExtension.CallWithTryCatchAsync<Book, AddBookResponse>(arg =>
+{
+    return client.AddBookAsync(arg);
 }, invalidArgumentBook);
 
 Console.WriteLine($"Invalid argument book returned '{res}'");
@@ -27,10 +29,11 @@ Console.WriteLine($"Invalid argument book returned '{res}'");
 //  return client.AddBookAsync(arg);
 //}, serverCrashingBook);
 
-var book = new Book {
-  Isbn = 12348,
-  Name = "atomic habits",
-  Publisher = "random house business books"
+var book = new Book
+{
+    Isbn = 12348,
+    Name = "atomic habits",
+    Publisher = "random house business books"
 };
 
 await client.AddBookAsync(book);
@@ -40,17 +43,17 @@ var listResp = await client.ListBooksAsync(new Empty());
 bool found = false;
 foreach (var b in listResp.Books)
 {
-  Console.WriteLine($"Isbn:{b.Isbn}, Name:{b.Name}, Publisher:{b.Publisher}");
+    Console.WriteLine($"Isbn:{b.Isbn}, Name:{b.Name}, Publisher:{b.Publisher}");
 
-  if (b.Isbn == book.Isbn && b.Name == book.Name && b.Publisher == book.Publisher)
-  {
-    found = true;
-  }
+    if (b.Isbn == book.Isbn && b.Name == book.Name && b.Publisher == book.Publisher)
+    {
+        found = true;
+    }
 }
 
 if (found)
 {
-  Console.WriteLine("Book sent through 'AddBook' request was verified to have been added while listing books.");
+    Console.WriteLine("Book sent through 'AddBook' request was verified to have been added while listing books.");
 }
 
 book.Name = "atomic habits vol-2";
