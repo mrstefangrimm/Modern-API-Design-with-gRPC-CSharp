@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 //{
 //    serverOptions.Listen(IPAddress.Parse("127.0.0.1"), 5001, listenOptions =>
 //    {
-//        listenOptions.UseHttps("dev.pfx", "grpc");
+//        listenOptions.UseHttps("server.pfx", "grpc");
 //    });
 //});
 
