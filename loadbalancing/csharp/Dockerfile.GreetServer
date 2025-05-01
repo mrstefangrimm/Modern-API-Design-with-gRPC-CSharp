@@ -1,0 +1,34 @@
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+
+# https://stackoverflow.com/questions/55128227/cannot-run-grpc-protoc-in-alpine-based-dotnet-sdk
+RUN apk add protobuf grpc protobuf-dev grpc-plugins
+ENV PROTOBUF_PROTOC=/usr/bin/protoc
+ENV gRPC_PluginFullPath=/usr/bin/grpc_csharp_plugin
+
+COPY proto /source/proto
+COPY GreetServer/src /source/GreetServer/src
+WORKDIR /source/GreetServer/src
+ARG TARGETARCH
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet publish -a ${TARGETARCH/amd64/x64} --use-current-runtime --self-contained false -o /app
+
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS development
+
+# https://stackoverflow.com/questions/55128227/cannot-run-grpc-protoc-in-alpine-based-dotnet-sdk
+RUN apk add protobuf grpc protobuf-dev grpc-plugins
+ENV PROTOBUF_PROTOC=/usr/bin/protoc
+ENV gRPC_PluginFullPath=/usr/bin/grpc_csharp_plugin
+
+COPY proto /source/proto
+COPY GreetServer/src /source/GreetServer/src
+CMD dotnet run --no-launch-profile
+WORKDIR /source/GreetServer/src
+
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
+WORKDIR /app
+COPY --from=build /app .
+USER $APP_UID
+
+ENTRYPOINT ["dotnet", "GreetServer.dll"]

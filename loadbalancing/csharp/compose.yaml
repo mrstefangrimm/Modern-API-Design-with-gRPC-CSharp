@@ -1,0 +1,40 @@
+services:
+  greet-server:
+    container_name: greet.server
+    image: greet/server
+    build: 
+      context: .
+      dockerfile: Dockerfile.GreetServer
+      target: development
+    ports:
+      - 50051:50051
+    develop:
+      watch:
+        - action: rebuild
+          path: ./GreetServer/src
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - GRPC_HOST=0.0.0.0
+      - GRPC_PORT=50051
+
+  greet-client:
+    container_name: greet.client
+    image: greet/client
+    build: 
+      context: .
+      dockerfile: Dockerfile.GreetClient
+      target: development
+    ports:
+      - 80:8080
+    depends_on:
+      - greet-server
+    develop:
+      watch:
+        - action: rebuild
+          path: ./GreetClient/src
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - HOST=0.0.0.0
+      - PORT=8080
+      - GATEWAY_HOST=host.docker.internal
+      - GATEWAY_PORT=50051

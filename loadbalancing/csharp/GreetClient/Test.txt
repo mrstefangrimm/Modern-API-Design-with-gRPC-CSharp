@@ -1,0 +1,26 @@
+curl --request POST --url 127.0.0.1:5033/greet --header 'Content-Type: application/json' --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+dotnet test tests
+
+---
+
+docker compose up --build -d
+curl --request POST --url 127.0.0.1/greet --header 'Content-Type: application/json' --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+curl 127.0.0.1
+
+PowerShell, not bash
+docker compose run --build --rm server dotnet test /source/tests
+
+https://docs.docker.com/guides/dotnet/develop/
+
+---
+
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+docker build . -t localhost:5000/greet-client
+docker push localhost:5000/greet-client
+
+
+https://stackoverflow.com/questions/57167104/how-to-use-local-docker-image-in-kubernetes-via-kubectl
+
+---
+docker build . -t mrstefangrimm/greet-client
+docker push mrstefangrimm/greet-client

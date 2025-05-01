@@ -1,0 +1,20 @@
+
+winget install Kubernetes.minikube
+minikube.exe start
+minikube addons list
+minikube addons enable ingress
+kubectl create -f .\greet-clusterrole.yaml
+kubectl create -f .\greet-clusterrolebinding.yaml
+kubectl create -f .\greetserver-deploy.yaml
+kubectl create -f .\greet.svc.yaml
+kubectl create -f .\greetclient-deploy.yaml
+kubectl create -f .\greet-client.svc.yaml
+kubectl create -f .\greet-ingress.yaml
+kubectl get po -A
+
+minikube tunnel
+# curl --request POST --url http://greet.com/greet --header 'Content-Type: application/json' --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+curl --request POST --url 127.0.0.1:80/greet --header 'Content-Type: application/json' --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+
+
+kubectl delete -f .\greet-ingress.yaml
