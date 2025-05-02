@@ -22,5 +22,3 @@ docker push localhost:5000/greet-client
 https://stackoverflow.com/questions/57167104/how-to-use-local-docker-image-in-kubernetes-via-kubectl
 
 ---
-docker build . -t mrstefangrimm/greet-client
-docker push mrstefangrimm/greet-client

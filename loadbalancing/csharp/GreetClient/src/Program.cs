@@ -16,7 +16,7 @@ var host = Environment.GetEnvironmentVariable("HOST") ?? "0.0.0.0";
 
 var grpcPortString = Environment.GetEnvironmentVariable("GATEWAY_PORT");
 int grpcPort = grpcPortString != null ? int.Parse(grpcPortString) : 50051;
-var grpcHost = Environment.GetEnvironmentVariable("GATEWAY_HOST") ?? "host.docker.internal";
+var grpcHost = Environment.GetEnvironmentVariable("GATEWAY_HOST") ?? "greet-server"; //minikube getting started:greet-server, kube: greetserver, kubectl get services; // when compose is used: "host.docker.internal";
 
 Console.WriteLine("Hello");
 
@@ -42,15 +42,21 @@ var greetApi = app.MapGroup("/");
 
 greetApi.MapPost("/greet", async Task<string> (HttpRequest request) =>
 {
-  Console.WriteLine("MapPost");
+  Console.WriteLine($"MapPost, grpc address:{address}");
 
   using var body = new StreamReader(request.Body);
   var data = await body.ReadToEndAsync();
   var greeter = JsonConvert.DeserializeObject<Greeter>(data);
 
-  var response = await client.GreetAsync(new GreetingRequest { Greeting = new Greeting { FirstName = greeter.first_name, LastName = greeter.last_name } });
-
-  return await Task.FromResult(response.Result);
+  try
+  {
+    var response = await client.GreetAsync(new GreetingRequest { Greeting = new Greeting { FirstName = greeter.first_name, LastName = greeter.last_name } });
+    return await Task.FromResult(response.Result);
+  }
+  catch (Exception e)
+  {
+    return e.Message;
+  }
 });
 greetApi.MapGet("/", () =>
 {

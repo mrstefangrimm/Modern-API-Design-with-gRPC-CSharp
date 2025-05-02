@@ -1,0 +1,70 @@
+docker build ../.. -t mrstefangrimm/greet-client -f ../../Dockerfile.GreetClient
+docker build ../.. -t mrstefangrimm/greet-server -f ../../Dockerfile.GreetServer
+docker push mrstefangrimm/greet-client
+docker push mrstefangrimm/greet-server
+
+winget install Kubernetes.minikube
+minikube start
+minikube addons list
+minikube addons enable ingress
+kubectl create -f ./greet-clusterrole.yaml
+kubectl create -f ./greet-clusterrolebinding.yaml
+kubectl create -f ./greetserver-deploy.yaml , kubectl delete ./greetserver-deploy.yaml
+kubectl create -f ./greet.svc.yaml , kubectl delete ./greet.svc.yaml
+kubectl create -f ./greetclient-deploy.yaml , kubectl delete -f ./greetclient-deploy.yaml
+kubectl create -f ./greet-client.svc.yaml , kubectl delete -f ./greet-client.svc.yaml
+kubectl create -f ./greet-ingress.yaml , kubectl delete -f ./greet-ingress.yaml
+kubectl get pod -A
+
+
+
+minikube tunnel
+curl --request POST --url http://greet.com:9091/greet --header 'Content-Type: application/json' --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+kubectl port-forward service/greetclient 80:9091
+curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+
+
+
+kubectl get services
+kubectl get pod -A
+kubectl describe pods greetclient
+kubectl delete -f ./greet-ingress.yaml
+kubectl logs greet-client-6f6d89bbdc-sgxxf -f
+
+kubectl get replicaset
+kubectl get pod greet-client-6f6d89bbdc-kcdgp --template='{{(index (index .spec.containers 0).ports 0).containerPort}}{{"\n"}}'
+kubectl get svc greet-client
+minikube ip
+
+https://stackoverflow.com/questions/57167104/how-to-use-local-docker-image-in-kubernetes-via-kubectl
+docker build . -t mrstefangrimm/greet-client                                                                            
+docker desktop, images, push to docker hub
+kubectl create -f .\greetclient-deploy.yaml
+
+
+kubectl create -f .\greetclient-deploy.yaml
+https://stackoverflow.com/questions/51266140/no-connection-could-be-made-because-the-target-machine-actively-refused-it-kub
+
+
+---
+
+minikube getting started
+------------------------
+
+minikube start
+kubectl create deployment greet-client --image=mrstefangrimm/greet-client
+ kubectl delete svc greet-client
+kubectl expose deployment greet-client --type=NodePort --port=8080
+kubectl create deployment greet-server --image=mrstefangrimm/greet-server
+kubectl expose deployment greet-server --type=NodePort --port=50051
+kubectl get services
+kubectl port-forward service/greet-client 7080:8080
+curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1:7080/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+curl 127.0.0.1:7080
+
+
+
+
+
+https://minikube.sigs.k8s.io/docs/start/?arch=%2Fwindows%2Fx86-64%2Fstable%2F.exe+download
+
