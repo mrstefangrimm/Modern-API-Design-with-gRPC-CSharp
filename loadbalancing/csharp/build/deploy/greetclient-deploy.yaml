@@ -18,11 +18,7 @@ spec:
           ports:
             - containerPort: 9091
           env:
-            - name: PORT
-              value: "9091"
-            - name: HOST
-              value: "0.0.0.0"
-            - name: GATEWAY_PORT
-              value: "50051"
-            - name: GATEWAY_HOST
-              value: "greetserver"
+            - name: ASPNETCORE_URLS
+              value: http://+:9091
+            - name: GrpcGreetServerUrl
+              value: http://greetserver:50051

@@ -27,3 +27,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: GRPC_PORT
+              value: "50051"
+            - name: GRPC_HOST
+              value: "0.0.0.0"

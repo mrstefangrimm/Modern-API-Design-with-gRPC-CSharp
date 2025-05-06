@@ -25,7 +25,7 @@ services:
       dockerfile: Dockerfile.GreetClient
       target: development
     ports:
-      - 80:8080
+      - 80:8081
     depends_on:
       - greet-server
     develop:
@@ -34,7 +34,5 @@ services:
           path: ./GreetClient/src
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - HOST=0.0.0.0
-      - PORT=8080
-      - GATEWAY_HOST=host.docker.internal
-      - GATEWAY_PORT=50051
+      - HTTP_PORTS=8081
+      - GrpcGreetServerUrl=http://host.docker.internal:50051

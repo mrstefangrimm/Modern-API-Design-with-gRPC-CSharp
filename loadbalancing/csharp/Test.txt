@@ -1,5 +1,5 @@
-curl --request POST --url 127.0.0.1:5033/greet --header 'Content-Type: application/json' --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
-dotnet test tests
+curl --request POST --url 127.0.0.1:8080/greet --header 'Content-Type: application/json' --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+dotnet test GreetClient/tests
 
 ---
 
@@ -8,9 +8,13 @@ curl --request POST --url 127.0.0.1/greet --header 'Content-Type: application/js
 curl 127.0.0.1
 
 PowerShell, not bash
-docker compose run --build --rm server dotnet test /source/tests
+#docker compose run --build --rm greet-server dotnet test /source/GreetClient/tests
+docker compose run --build dotnet test /source/GreetClient/tests
+
 
 https://docs.docker.com/guides/dotnet/develop/
+
+docker compose down
 
 ---
 

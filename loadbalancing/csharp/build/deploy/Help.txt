@@ -5,21 +5,21 @@ docker push mrstefangrimm/greet-server
 
 winget install Kubernetes.minikube
 minikube start
-minikube addons list
-minikube addons enable ingress
-kubectl create -f ./greet-clusterrole.yaml
-kubectl create -f ./greet-clusterrolebinding.yaml
+# minikube addons list
+# minikube addons enable ingress
+# kubectl create -f ./greet-clusterrole.yaml
+# kubectl create -f ./greet-clusterrolebinding.yaml
 kubectl create -f ./greetserver-deploy.yaml , kubectl delete ./greetserver-deploy.yaml
 kubectl create -f ./greet.svc.yaml , kubectl delete ./greet.svc.yaml
 kubectl create -f ./greetclient-deploy.yaml , kubectl delete -f ./greetclient-deploy.yaml
 kubectl create -f ./greet-client.svc.yaml , kubectl delete -f ./greet-client.svc.yaml
-kubectl create -f ./greet-ingress.yaml , kubectl delete -f ./greet-ingress.yaml
+# kubectl create -f ./greet-ingress.yaml , kubectl delete -f ./greet-ingress.yaml
 kubectl get pod -A
 
 
 
 minikube tunnel
-curl --request POST --url http://greet.com:9091/greet --header 'Content-Type: application/json' --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+curl --request POST --url 127.0.0.1:9091/greet --header 'Content-Type: application/json' --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
 kubectl port-forward service/greetclient 80:9091
 curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
 
