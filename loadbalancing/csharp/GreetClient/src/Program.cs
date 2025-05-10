@@ -12,7 +12,6 @@ var builder = WebApplication.CreateSlimBuilder(args);
 Console.WriteLine("Hello.");
 
 var grpcAddress = builder.Configuration["GrpcGreetServerUrl"]!;
-
 Console.WriteLine($"Expecting grpc greet server address: {grpcAddress}");
 
 using var channel = GrpcChannel.ForAddress(grpcAddress);
@@ -40,6 +39,7 @@ greetApi.MapPost("/greet", async Task<string> (HttpRequest request) =>
     return e.Message;
   }
 });
+
 greetApi.MapGet("/", () =>
 {
   Console.WriteLine("MapGet");
