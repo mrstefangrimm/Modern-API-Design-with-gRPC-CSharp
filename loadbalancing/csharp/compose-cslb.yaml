@@ -53,7 +53,7 @@ services:
           path: ./GreetClient-CsLb/src
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - HTTP_PORTS=8081
+      - ASPNETCORE_HTTP_PORTS=8081
       - GrpcGreetServerUrl=static:///host.docker.internal:50051
       - GprcGreetServerHost1=host.docker.internal
       - GprcGreetServerPort1=50052

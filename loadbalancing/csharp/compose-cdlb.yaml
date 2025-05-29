@@ -1,13 +1,15 @@
 services:
   greet-server:
-    container_name: greet.server
     image: greet/server
+    hostname: lb-greet-server
     build: 
       context: .
       dockerfile: Dockerfile.GreetServer
       target: development
-    ports:
-      - 50051:5001
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: dnsrr
     develop:
       watch:
         - action: rebuild
@@ -18,14 +20,14 @@ services:
       - GRPC_PORT=5001
 
   greet-client:
-    container_name: greet.client
+    container_name: csharp-greet-client
     image: greet/client
     build: 
       context: .
-      dockerfile: Dockerfile.GreetClient
+      dockerfile: Dockerfile.GreetClient-CdLb
       target: development
     ports:
-      - 80:8081
+      - 80:8081    
     depends_on:
       - greet-server
     develop:
@@ -35,4 +37,4 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8081
-      - GrpcGreetServerUrl=http://host.docker.internal:50051
+      - GrpcGreetServerUrl=dns:///lb-greet-server:5001

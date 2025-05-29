@@ -1,6 +1,6 @@
 From Visual Studio
 
-curl 127.0.0.1:80
+curl 127.0.0.1:8080
 curl --request POST --url 127.0.0.1:8080/greet --header 'Content-Type: application/json' --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
 dotnet test GreetClient/tests
 
@@ -22,13 +22,24 @@ docker compose down
 
 ---
 
-Client-side load balanced (CsLb)
+Client-side static load balanced (CsLb)
 
 docker compose -f compose-cslb.yaml up --build -d
 curl 127.0.0.1:80
 curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
 
 => Check logs of greet.server1 and greet.server2, both are used
+
+---
+
+Client-side dynamic load balanced (CsLb)
+
+docker compose -f compose-cdlb.yaml up --build -d
+curl 127.0.0.1:80
+curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+
+
+=> Check logs of csharp-greet-server-1 and csharp-greet-server-2, both are used
 
 ---
 

@@ -1,4 +1,4 @@
-Client-side load balancing (CsLb)
+Client-side static load balancing (CsLb)
 
 docker build ../.. -t mrstefangrimm/greet-client-cblb -f ../../Dockerfile.GreetClient-CsLb
 docker build ../.. -t mrstefangrimm/greet-server -f ../../Dockerfile.GreetServer

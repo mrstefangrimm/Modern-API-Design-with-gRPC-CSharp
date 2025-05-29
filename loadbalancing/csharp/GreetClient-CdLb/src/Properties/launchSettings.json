@@ -1,12 +1,12 @@
 {
   "profiles": {
-    "GreetServer": {
+    "http-8080": {
       "commandName": "Project",
+      "dotnetRunMessages": true,
       "environmentVariables": {
-        "GRPC_PORT": "5001",
-        "GRPC_HOST": "127.0.0.1",
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:8080"
     }
   }
 }
