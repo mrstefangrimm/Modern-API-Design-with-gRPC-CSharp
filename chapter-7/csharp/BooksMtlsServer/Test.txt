@@ -1,3 +1,3 @@
 
-
-Requires client with client certificate.
+create server and client certificates in folder Certs
+copy client.crt to Certs

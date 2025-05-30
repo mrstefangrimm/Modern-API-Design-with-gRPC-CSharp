@@ -16,10 +16,6 @@
     <None Update="Certs\client.crt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Certs\server.pfx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
-
 
 </Project>

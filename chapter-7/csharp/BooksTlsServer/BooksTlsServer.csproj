@@ -11,11 +11,4 @@
     <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.70.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Certs\server.pfx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-
 </Project>

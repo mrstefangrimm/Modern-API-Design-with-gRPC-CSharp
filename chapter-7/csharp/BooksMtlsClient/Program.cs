@@ -11,7 +11,6 @@ handler.ClientCertificates.Add(clientCertificate);
 
 var channelOptions = new GrpcChannelOptions
 {
-    //Credentials = ChannelCredentials.SecureSsl,
     HttpHandler = handler
 };
 
