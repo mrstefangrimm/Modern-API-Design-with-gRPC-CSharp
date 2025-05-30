@@ -1,3 +1,0 @@
-Start BooksBasicAuthServer.exe
-grpcurl -d '{ "isbn":123456 }' -H "authorization:Basic dW5hbWU6c2FmZVBhc3M=" localhost:5001 prot.BookService.GetBook
-

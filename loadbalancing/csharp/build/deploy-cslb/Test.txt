@@ -1,0 +1,25 @@
+Client-side static load balancing (CsLb)
+
+docker build ../.. -t mrstefangrimm/greet-client-cslb -f ../../Dockerfile.GreetClient-CsLb
+docker build ../.. -t mrstefangrimm/greet-server -f ../../Dockerfile.GreetServer
+docker push mrstefangrimm/greet-client-cslb
+docker push mrstefangrimm/greet-server
+
+winget install Kubernetes.minikube
+minikube start
+minikube dashboard (other bash)
+
+kubectl create -f ./greetclient-deploy.yaml
+kubectl create -f ./greetclient.svc.yaml
+kubectl create -f ./greetserver1-deploy.yaml
+kubectl create -f ./greetserver2-deploy.yaml
+kubectl create -f ./greetserver.svc.yaml
+
+kubectl port-forward service/greetclient 80:9091 (yet other bash)
+curl 127.0.0.1
+curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+=> Both greetserver pods are used
+
+
+
+

@@ -1,0 +1,3 @@
+start BooksBasicAuthServer.exe
+
+start BooksBasicAuthClient.exe

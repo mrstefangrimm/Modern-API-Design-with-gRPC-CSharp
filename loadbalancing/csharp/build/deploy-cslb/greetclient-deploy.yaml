@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greetclient-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greetclient
+  template:
+    metadata:
+      labels:
+        app: greetclient
+    spec:
+      containers:
+        - image: mrstefangrimm/greet-client-cslb
+          name: greetclient
+          ports:
+            - containerPort: 9091
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://+:9091
+            - name: GrpcGreetServerUrl
+              value: static:///greetserver:50051
+            - name: GprcGreetServerHost1
+              value: greetserver
+            - name: GprcGreetServerPort1
+              value: "50052"
+            - name: GprcGreetServerHost2
+              value: greetserver
+            - name: GprcGreetServerPort2
+              value: "50053"  

@@ -1,0 +1,55 @@
+GreetClient/GreetServer as from the book
+
+From Visual Studio
+start GreetServer.exe
+start GreetClient.exe
+
+curl 127.0.0.1:8080
+curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1:8080/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+
+
+With docker compose
+docker compose -f compose.yaml up --build -d
+curl 127.0.0.1
+curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+
+
+PowerShell, not git bash
+TODO: csharp/greet.server is not removed. 
+docker compose -f compose.yaml run --build --rm greet-client dotnet test /source/GreetClient/tests
+
+---
+
+Client-side static load balanced (CsLb)
+
+From Visual Studio
+start GreetServer.exe with port number 5002
+start GreetServer.exe with port number 5003
+start GreetClient-CsLb.exe
+
+curl 127.0.0.1:8080
+curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1:8080/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+
+=> Check greet server1 and greet server2, both are used
+
+With docker compose
+docker compose -f compose-cslb.yaml up --build -d
+curl 127.0.0.1:80
+curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+
+=> Check logs of greet.server1 and greet.server2, both are used
+
+---
+
+Client-side dynamic load balanced (CdLb)
+
+With docker compose
+docker compose -f compose-cdlb.yaml up --build -d
+curl 127.0.0.1:80
+curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+
+
+=> Check logs of csharp-greet-server-1 and csharp-greet-server-2, both are used
+
+---
+

@@ -1,0 +1,17 @@
+
+start wsl
+./gen-server.https.sh
+./gen-client.https.sh
+
+start powershell as Administrator
+Import-PfxCertificate -FilePath server.pfx Cert:\LocalMachine\My -Password (ConvertTo-SecureString grpc -asplaintext -force) -Exportable
+Import-PfxCertificate -FilePath client.pfx Cert:\LocalMachine\My -Password (ConvertTo-SecureString grpc -asplaintext -force) -Exportable
+Import-Certificate -FilePath server.crt -CertStoreLocation Cert:\CurrentUser\Root
+Import-Certificate -FilePath client.crt -CertStoreLocation Cert:\CurrentUser\Root
+
+see:
+https://docs.servicestack.net/grpc/ssl#trust-certificate-on-windows
+
+
+https://www.danlearnsstuff.com/2021/05/clearing-out-old-dev-certs-from-dotnet.html
+dotnet dev-certs https --clean
