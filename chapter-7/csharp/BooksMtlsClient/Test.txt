@@ -1,3 +1,8 @@
 
 create client certificates in folder Certs
-copy client.pfx to Certs
+copy client.pfx to BooksMtlsClient\Certs
+copy client.crt to BooksMtlsServer\Certs
+
+start BooksMtlsServer.exe
+
+start BooksMtlsClient.exe

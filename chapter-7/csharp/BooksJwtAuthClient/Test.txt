@@ -1,0 +1,5 @@
+
+start JwtAutServer.exe
+start BooksJwtAuthServer.exe
+
+start BooksJwtAuthClient.exe
