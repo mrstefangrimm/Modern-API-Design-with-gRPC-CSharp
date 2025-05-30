@@ -7,7 +7,6 @@ ENV gRPC_PluginFullPath=/usr/bin/grpc_csharp_plugin
 
 COPY proto /source/proto
 COPY GreetClient/src /source/GreetClient/src
-COPY GreetClient/tests /source/GreetClient/tests
 WORKDIR /source/GreetClient/src
 ARG TARGETARCH
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \

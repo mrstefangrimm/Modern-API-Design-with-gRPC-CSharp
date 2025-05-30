@@ -1,8 +1,7 @@
-Client-side dns load balancing (CdLb)
 
-docker build ../.. -t mrstefangrimm/greet-client-cdlb -f ../../Dockerfile.GreetClient-CdLb
+docker build ../.. -t mrstefangrimm/greet-client -f ../../Dockerfile.GreetClient
 docker build ../.. -t mrstefangrimm/greet-server -f ../../Dockerfile.GreetServer
-docker push mrstefangrimm/greet-client-cdlb
+docker push mrstefangrimm/greet-client
 docker push mrstefangrimm/greet-server
 
 winget install Kubernetes.minikube
@@ -17,4 +16,5 @@ kubectl create -f ./greetserver.svc.yaml
 kubectl port-forward service/greetclient 80:9091 (yet other bash)
 curl 127.0.0.1
 curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
-=> Both greetserver pods are used
+
+=> Only the first of the 3 greetserver pods is used

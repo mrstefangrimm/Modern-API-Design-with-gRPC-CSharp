@@ -9,7 +9,7 @@ namespace GreetServer.Services
   {
     public override Task<GreetingResponse> Greet(GreetingRequest request, ServerCallContext context)
     {
-      Console.WriteLine("Got Greet");
+      Console.WriteLine("Service got greet.");
 
       string podIp = Environment.GetEnvironmentVariable("POD_IP") ?? string.Empty;
       string podName = Environment.GetEnvironmentVariable("POD_NAME") ?? string.Empty;

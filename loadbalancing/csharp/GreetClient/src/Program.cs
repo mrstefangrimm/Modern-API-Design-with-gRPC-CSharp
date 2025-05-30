@@ -44,7 +44,7 @@ greetApi.MapGet("/", () =>
 {
   Console.WriteLine("MapGet");
 
-  return "+++++";
+  return "Client got greet.";
 });
 
 app.Run();
