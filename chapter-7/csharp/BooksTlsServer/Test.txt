@@ -3,3 +3,9 @@ Create server certificate in folder Certs
 start BooksTlsServer.exe
 grpcurl -d '{ "isbn":123456 }' localhost:5001 prot.BookService.GetBook
 
+
+With docker
+docker build .. -t mrstefangrimm/books_tls_server -f ../Dockerfile.BooksTlsServer
+
+
+docker run mrstefangrimm/books_tls_server -d -p 50051:5001 nginx

@@ -15,3 +15,7 @@ https://docs.servicestack.net/grpc/ssl#trust-certificate-on-windows
 
 https://www.danlearnsstuff.com/2021/05/clearing-out-old-dev-certs-from-dotnet.html
 dotnet dev-certs https --clean
+
+https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-dev-certs
+
+dotnet dev-certs https -ep ./develcert.pfx -p devel --trust

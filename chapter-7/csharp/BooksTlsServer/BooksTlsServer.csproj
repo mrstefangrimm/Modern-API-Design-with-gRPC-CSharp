@@ -5,10 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\..\..\books-app\internal\pkg\proto\book.proto" GrpcServices="GrpcBooksServer" Link="Protos\book.proto" />
+    <Protobuf Include="..\proto\book.proto" GrpcServices="GrpcBooksServer" Link="Protos\book.proto" />
 
     <PackageReference Include="Grpc.AspNetCore" Version="2.70.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.70.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Certs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Certs\develcert.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

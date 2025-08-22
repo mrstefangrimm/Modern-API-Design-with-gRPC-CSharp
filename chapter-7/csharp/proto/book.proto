@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package prot;
+option go_package="./proto";
+
+message Empty{}
+
+message Book {
+  int32 isbn = 1;
+  string name = 2;
+  string publisher = 3;
+}
+
+message AddBookResponse{
+    string status = 1;
+}
+
+message ListBooksRespose{
+    repeated Book books = 1;
+}
+
+message GetBookRequest{
+    int32 isbn = 1;
+}
+
+message RemoveBookRequest{
+    int32 isbn = 1;
+}
+
+message RemoveBookResponse{
+    string status = 1;
+}
+
+message UpdateBookResponse{
+    string status = 1;
+}
+
+service BookService{
+  // Unary
+  rpc AddBook(Book) returns (AddBookResponse) {};
+  rpc ListBooks(Empty) returns (ListBooksRespose) {};
+  rpc GetBook(GetBookRequest) returns (Book) {};
+  rpc RemoveBook(RemoveBookRequest) returns (RemoveBookResponse) {};
+  rpc UpdateBook(Book) returns (UpdateBookResponse) {};
+}
+
+message Review {
+  string reviewer = 1;
+  string comment = 2;
+  int32 rating = 3;
+}
+
+message SubmitReviewRequest {
+  int32 isbn = 1;
+  string reviewer = 2;
+  string comment = 3;
+  int32 rating = 4;
+}
+
+message SubmitReviewResponse {
+  string status = 1;
+}
+
+message GetBookReviewsRequest {
+  int32 isbn = 1;
+}
+
+message GetBookReviewsResponse {
+  repeated Review reviews = 1;
+}
+
+service ReviewService {
+   // Unary RPC to submit a book review
+  rpc SubmitReviews(SubmitReviewRequest) returns (SubmitReviewResponse);
+
+   // Unary RPC to fetch all book reviews
+  rpc GetBookReviews(GetBookReviewsRequest) returns (GetBookReviewsResponse);
+}
+
+message GetBookInfoRequest {
+  int32 isbn = 1;
+}
+
+message GetBookInfoResponse {
+  int32 isbn = 1;
+  string name = 2;
+  string publisher = 3;
+  repeated Review reviews = 4;
+}
+
+service BookInfoService {
+  // Unary RPC to get book information with reviews by ID
+  rpc GetBookInfoWithReviews(GetBookInfoRequest) returns (GetBookInfoResponse);
+}
