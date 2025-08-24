@@ -4,6 +4,8 @@ docker build ../.. -t mrstefangrimm/greet-server -f ../../Dockerfile.GreetServer
 docker push mrstefangrimm/greet-client
 docker push mrstefangrimm/greet-server
 
+
+---
 winget install Kubernetes.minikube
 minikube start
 minikube dashboard (other bash)
@@ -13,8 +15,36 @@ kubectl create -f ./greetclient.svc.yaml
 kubectl create -f ./greetserver-deploy.yaml
 kubectl create -f ./greetserver.svc.yaml
 
-kubectl port-forward service/greetclient 80:9091 (yet other bash)
+kubectl port-forward service/greetclient 80:8080 (yet other bash)
 curl 127.0.0.1
 curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
 
 => Only the first of the 3 greetserver pods is used
+
+---
+
+OpenShift Local
+
+>oc login (open url and copy oc login from there)
+>oc login --token=sha256~x2UAxpLj18dyVTy2cGZPEy-CXnj5kY-9cU5aMgK7vw8 --server=https://api.crc.testing:6443
+>oc new-project greet-nolb (or when already existing: oc project greet-nolb)
+//oc import-image docker.io/mrstefangrimm/greet-server --confirm (in the Dashboard, it is the (+) icon top/right -> Container images)
+In the Dashboard, Workloads, Deployments, Create Deployment
+  Copy-paste greetserver-deploy.yaml
+  Change image to docker.io/mrstefangrimm/greet-server
+>kubectl get po
+>oc expose pod/greetserver-deploy-55b99868f9-8kp7m
+  => In the Dashboard, Networking, Services, greetserver is exposed
+In the Dashboard, Workloads, Deployments, Create Deployment
+  Copy-paste greetclient-deploy.yaml
+  Change image to docker.io/mrstefangrimm/greet-client
+  Change the environment variable GrpcGreetServerUrl to 'http://10.217.5.55:50051' (ip address from the greetserver service dashboard)
+>kubectl get po
+>oc expose pod/greetclient-deploy-7745f6cbdd-j8sr7
+  => In the Dashboard, Networking, Services, greetclient is exposed
+>kubectl port-forward greetclient-deploy-7745f6cbdd-j8sr7 8080:9091 (in another console)
+>curl 127.0.0.1:8080
+>curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1:8080/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
+
+=> Only the first of the 3 greetserver pods is used. If this pod is deleted, the next is used
+
