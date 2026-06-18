@@ -4,8 +4,10 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace Server
+namespace FibonacciServer
 {
+  // ReSharper disable BuiltInTypeReferenceStyle
+    
   public class GrpcFibonacciService : FibonacciService.FibonacciServiceBase
   {
     public override Task<SyncFibonacciResponse> SyncFibonacci(FibonacciRequest request, ServerCallContext context)

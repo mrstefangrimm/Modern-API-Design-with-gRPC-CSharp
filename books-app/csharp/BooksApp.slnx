@@ -1,0 +1,12 @@
+<Solution>
+  <Project Path="Db/Db.csproj" />
+  <Project Path="GrpcBookInfoClient/GrpcBookInfoClient.csproj" />
+  <Project Path="GrpcBookInfoServer/GrpcBookInfoServer.csproj" />
+  <Project Path="GrpcBooksClient/GrpcBooksClient.csproj" />
+  <Project Path="GrpcBooksServer/GrpcBooksServer.csproj" />
+  <Project Path="GrpcReviewClient/GrpcReviewClient.csproj" />
+  <Project Path="GrpcReviewServer/GrpcReviewServer.csproj" />
+  <Project Path="Model/Model.csproj" />
+  <Project Path="Repo/Repo.csproj" />
+  <Project Path="Service/Service.csproj" />
+</Solution>

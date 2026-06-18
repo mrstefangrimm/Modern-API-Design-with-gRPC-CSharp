@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="AverageClient/AverageClient.csproj" />
+  <Project Path="AverageServer/AverageServer.csproj" />
+  <Project Path="FibonacciClient/FibonacciClient.csproj" />
+  <Project Path="FibonacciServer/FibonacciServer.csproj" />
+  <Project Path="MaxClient/MaxClient.csproj" />
+  <Project Path="MaxServer/MaxServer.csproj" />
+</Solution>

@@ -1,0 +1,10 @@
+<Solution>
+  <Project Path="BooksBasicAuthClient/BooksBasicAuthClient.csproj" />
+  <Project Path="BooksBasicAuthServer/BooksBasicAuthServer.csproj" />
+  <Project Path="BooksJwtAuthClient/BooksJwtAuthClient.csproj" />
+  <Project Path="BooksJwtAuthServer/BooksJwtAuthServer.csproj" />
+  <Project Path="BooksMtlsClient/BooksMtlsClient.csproj" />
+  <Project Path="BooksMtlsServer/BooksMtlsServer.csproj" />
+  <Project Path="BooksTlsServer/BooksTlsServer.csproj" />
+  <Project Path="JwtAuthServer/JwtAuthServer.csproj" />
+</Solution>

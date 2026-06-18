@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="GreetClient-CdLb/src/GreetClient-CdLb.csproj" />
+  <Project Path="GreetClient-CsLb/src/GreetClient-CsLb.csproj" />
+  <Project Path="GreetClient/src/GreetClient.csproj" />
+  <Project Path="GreetClient/tests/GreetClient.Tests.csproj" />
+  <Project Path="GreetServer/src/GreetServer.csproj" />
+</Solution>

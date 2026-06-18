@@ -1,5 +1,6 @@
 Create server certificate in folder Certs
 
 start BooksTlsServer.exe
-grpcurl -d '{ "isbn":123456 }' localhost:5001 prot.BookService.GetBook
+grpcurl -cacert .\Certs\server.crt  -d '{ \"isbn\":123456 }' localhost:5001 prot.BookService.GetBook
+grpcurl -cacert .\Certs\server.crt localhost:5001 list
 
