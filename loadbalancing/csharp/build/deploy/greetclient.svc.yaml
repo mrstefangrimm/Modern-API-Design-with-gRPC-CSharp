@@ -4,7 +4,6 @@ metadata:
   labels:
     run: greetclient
   name: greetclient
-  namespace: default
 spec:
   ports:
     - name: restgateway
@@ -13,4 +12,4 @@ spec:
       targetPort: 9091
   selector:
     app: greetclient
-  type: LoadBalancer
+  type: ClusterIP

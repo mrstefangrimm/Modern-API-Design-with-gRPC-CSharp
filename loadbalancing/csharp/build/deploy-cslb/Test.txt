@@ -5,6 +5,7 @@ docker build ../.. -t mrstefangrimm/greet-server -f ../../Dockerfile.GreetServer
 docker push mrstefangrimm/greet-client-cslb
 docker push mrstefangrimm/greet-server
 
+---
 winget install Kubernetes.minikube
 minikube start
 minikube dashboard (other bash)
@@ -20,6 +21,45 @@ curl 127.0.0.1
 curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
 => Both greetserver pods are used
 
+---
 
-
-
+OpenShift Local Dashboard
+Home, Projects, Create Project
+  greet-cslb
+(+), Container images
+  docker.io/mrstefangrimm/greet-client-cslb
+  Untick Create a route
+(+), Container images
+  docker.io/mrstefangrimm/greet-server
+  Untick Create a route
+(+), Container images
+  docker.io/mrstefangrimm/greet-server
+  Name: greetserver1
+  Untick Create a route
+(+), Container images
+  docker.io/mrstefangrimm/greet-server
+  Name: greetserver2
+  Untick Create a route
+Workloads, Deployments, greet-server
+  Scale pods to 0
+Workloads, Deployments, greetserver1
+  Set and edit the environment variables
+Workloads, Deployments, greetserver2
+  Set and edit the environment variables
+Networking, Services
+  Copy IP/Ports from greet-server, greetserver1, greetserver2
+Workloads, Deployments, greet-client
+  Set the environment variables
+  greet-client log is something like:
+    Hello.
+    Expecting static load balanced grpc greet server address: static:///10.217.5.125:50051
+    Expecting grpc greet server 1 address: 10.217.4.235:50052
+    Expecting grpc greet server 2 address: 10.217.4.141:50053
+    warn: Microsoft.AspNetCore.Hosting.Diagnostics[15]
+    Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:9091'.
+    info: Microsoft.Hosting.Lifetime[14]
+    Now listening on: http://[::]:9091
+>kubectl get po
+>kubectl port-forward greet-client-cslb-768f7fff78-xnvk4 8080:9091 (in another console)
+>curl 127.0.0.1:8080
+>curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1:8080/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'

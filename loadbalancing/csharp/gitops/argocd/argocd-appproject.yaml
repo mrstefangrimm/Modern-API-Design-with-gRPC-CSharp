@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: grpc-services
+  namespace: openshift-gitops
+spec:
+  sourceRepos:
+  - 'https://github.com/mrstefangrimm/Modern-API-Design-with-gRPC-CSharp'
+  destinations:
+  - namespace: 'grpc-services'
+    server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'

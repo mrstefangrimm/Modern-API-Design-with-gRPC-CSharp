@@ -5,6 +5,7 @@ docker build ../.. -t mrstefangrimm/greet-server -f ../../Dockerfile.GreetServer
 docker push mrstefangrimm/greet-client-cdlb
 docker push mrstefangrimm/greet-server
 
+---
 winget install Kubernetes.minikube
 minikube start
 minikube dashboard (other bash)
@@ -18,3 +19,34 @@ kubectl port-forward service/greetclient 80:9091 (yet other bash)
 curl 127.0.0.1
 curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'
 => Both greetserver pods are used
+
+---
+
+OpenShift Local Dashboard
+Home, Projects, Create Project
+  greet-cslb
+(+), Container images
+  docker.io/mrstefangrimm/greet-client-cdlb
+  Untick Create a route
+(+), Container images
+  docker.io/mrstefangrimm/greet-server
+  Untick Create a route
+Workloads, Deployments, greet-server
+  Set and edit the environment variables
+Networking, Services
+  Copy IP/Ports from greet-server
+Workloads, Deployments, greet-client
+  Set the environment variables
+  greet-client log is something like:
+    Hello.
+    Hello.
+    Expecting grpc greet server address: dns:///10.217.5.248:50051
+    LoadBalancingConfig: RoundRobinConfig
+    warn: Microsoft.AspNetCore.Hosting.Diagnostics[15]
+    Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:9091'.
+    info: Microsoft.Hosting.Lifetime[14]
+    Now listening on: http://[::]:9091
+>kubectl get po
+>kubectl port-forward greet-client-cdlb-6966568ffd-fzhfj (in another console)
+>curl 127.0.0.1:8080
+>curl -X POST -H 'Content-Type: application/json' --url 127.0.0.1:8080/greet --data '{"first_name": "Hitesh", "last_name":"Pattanayak"}'

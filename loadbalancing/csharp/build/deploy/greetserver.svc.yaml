@@ -4,7 +4,6 @@ metadata:
   labels:
     run: greetserver
   name: greetserver
-  namespace: default
 spec:
   ports:
     - name: grpc
