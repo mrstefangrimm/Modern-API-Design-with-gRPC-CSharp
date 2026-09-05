@@ -1,28 +1,31 @@
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+apiVersion: v1
+kind: Namespace
 metadata:
-  name: argocd-repo-manager
-rules:
-- apiGroups: ['']
-  resources: ['secrets']
-  verbs: ['get', 'list', 'watch', 'create', 'update', 'patch', 'delete']
-  resourceNames: [] # Allow all secrets
-- apiGroups: ['argoproj.io']
-  resources: ['repositories']
-  verbs: ['get', 'list', 'watch', 'create', 'update', 'patch', 'delete']
+  name: grpc-services
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: Role
 metadata:
-  name: argocd-repo-manager-binding
+  name: argocd-deployer
+  namespace: grpc-services
+rules:
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["create", "update", "patch", "get", "list"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["create", "update", "patch", "get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argocd-deployer
+  namespace: grpc-services
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: argocd-repo-manager
+  kind: Role
+  name: argocd-deployer
 subjects:
 - kind: ServiceAccount
-  name: argocd-application-controller
-  namespace: openshift-gitops
-- kind: ServiceAccount
-  name: argocd-server
+  name: openshift-gitops-argocd-application-controller
   namespace: openshift-gitops

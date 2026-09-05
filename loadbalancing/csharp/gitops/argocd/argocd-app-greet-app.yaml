@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: greet-server
+  name: greet-app
   namespace: openshift-gitops
 spec:
   project: grpc-services
@@ -9,7 +9,6 @@ spec:
     repoURL: https://github.com/mrstefangrimm/Modern-API-Design-with-gRPC-CSharp
     targetRevision: openshift
     path: loadbalancing/csharp/build/deploy
-    # Filter to deploy only greet-server resources
   destination:
     server: https://kubernetes.default.svc
     namespace: grpc-services
