@@ -4,7 +4,7 @@ metadata:
   name: greet-client
   namespace: openshift-gitops
 spec:
-  project: default
+  project: grpc-services
   source:
     repoURL: https://github.com/mrstefangrimm/Modern-API-Design-with-gRPC-CSharp
     targetRevision: openshift
