@@ -4,7 +4,6 @@ metadata:
   labels:
     run: greetclient
   name: greetclient
-  namespace: default
 spec:
   ports:
     - name: restgateway
