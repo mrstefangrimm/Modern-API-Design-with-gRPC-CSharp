@@ -8,6 +8,7 @@ docker push mrstefangrimm/greet-server
 ---
 winget install Kubernetes.minikube
 minikube start
+minikube addons enable ingress
 minikube dashboard (other bash)
 
 kubectl create -f ./greetclient-deploy.yaml
