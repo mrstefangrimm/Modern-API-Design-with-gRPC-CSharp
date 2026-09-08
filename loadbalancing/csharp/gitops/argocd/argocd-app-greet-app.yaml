@@ -7,7 +7,7 @@ spec:
   project: grpc-services
   source:
     repoURL: https://github.com/mrstefangrimm/Modern-API-Design-with-gRPC-CSharp
-    targetRevision: openshift
+    targetRevision: main
     path: loadbalancing/csharp/build/deploy
   destination:
     server: https://kubernetes.default.svc
