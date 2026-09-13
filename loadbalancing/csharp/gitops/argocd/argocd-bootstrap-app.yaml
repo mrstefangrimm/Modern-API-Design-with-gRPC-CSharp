@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-bootstrap
+  namespace: gitops
+spec:
+  project: grpc-services
+  source:
+    repoURL: https://github.com/mrstefangrimm/Modern-API-Design-with-gRPC-CSharp
+    targetRevision: openshift
+    path: loadbalancing/csharp/gitops/argocd
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
