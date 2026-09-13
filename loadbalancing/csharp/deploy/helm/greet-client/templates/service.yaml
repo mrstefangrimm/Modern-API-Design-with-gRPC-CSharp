@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "greet-client.fullname" . }}
+  labels:
+    {{- include "greet-client.labels" . | nindent 4 }}
+spec:
+  ports:
+    - name: restgateway
+      port: {{ .Values.containerPort | default .Values.service.port }}
+      protocol: TCP
+      targetPort: {{ .Values.containerPort | default .Values.service.port }}
+  selector:
+    {{- include "greet-client.selectorLabels" . | nindent 4 }}
+  type: {{ .Values.service.type }}

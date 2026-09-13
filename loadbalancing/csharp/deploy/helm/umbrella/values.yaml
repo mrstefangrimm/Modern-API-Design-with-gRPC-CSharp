@@ -1,0 +1,24 @@
+# Installation
+install:
+  noLoadBalancing: true
+  staticLoadBalancing: true
+  dynamicLoadBalancing: true
+  
+cnlb-greet-server:
+  grpcServerPort: 50051
+
+cnlb-greet-client:
+  containerPort: 9091
+  grpcServerPort: 50051
+
+cslb-greet-server1:
+  grpcServerPort: 50052
+  
+cslb-greet-server2:
+  grpcServerPort: 50053
+  
+cdlb-greet-server:
+  grpcServerPort: 50054
+  
+
+  
