@@ -22,3 +22,11 @@ dependencies:
     version: "0.1.0"
     repository: "file://../greet-client"
     alias: cnlb-greet-client
+  - name: greet-client
+    version: "0.1.0"
+    repository: "file://../greet-client"
+    alias: cdlb-greet-client
+  - name: greet-client
+    version: "0.1.0"
+    repository: "file://../greet-client"
+    alias: cslb-greet-client

@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.imageRegistry | default .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.containerPort | default .Values.service.port }}
@@ -27,4 +27,14 @@ spec:
             - name: ASPNETCORE_URLS
               value: http://+:{{ .Values.containerPort | default .Values.service.port }}
             - name: GrpcGreetServerUrl
-              value: http://greetserver:{{ .Values.grpcServerPort | default 50051 }}
+              value: {{ tpl .Values.GrpcGreetServerUrl . | quote }}
+            {{- if eq (include "greet-client.name" .) "cslb-greet-client" }}
+            - name: GprcGreetServerHost1
+              value: {{ .Release.Name }}-cslb-greet-server1
+            - name: GprcGreetServerPort1
+              value: "50052"
+            - name: GprcGreetServerHost2
+              value: {{ .Release.Name }}-cslb-greet-server2
+            - name: GprcGreetServerPort2
+              value: "50053" 
+            {{- end }}

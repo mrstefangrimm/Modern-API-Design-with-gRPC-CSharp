@@ -14,5 +14,11 @@ dependencies:
 - name: greet-client
   repository: file://../greet-client
   version: 0.1.0
-digest: sha256:0c3e903b7331dadaf5c919f967381c3758e681e0f6fa37447cf8513df5a84f5b
-generated: "2026-09-13T15:51:52.1837322+02:00"
+- name: greet-client
+  repository: file://../greet-client
+  version: 0.1.0
+- name: greet-client
+  repository: file://../greet-client
+  version: 0.1.0
+digest: sha256:b7af569c4f1dff722eed1eaf44ae262aae38d136d8a40434ff84ae5933d30174
+generated: "2026-09-14T21:19:00.0774844+02:00"

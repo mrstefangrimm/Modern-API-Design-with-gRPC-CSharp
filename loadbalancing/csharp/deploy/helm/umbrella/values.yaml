@@ -1,24 +1,30 @@
-# Installation
-install:
-  noLoadBalancing: true
-  staticLoadBalancing: true
-  dynamicLoadBalancing: true
-  
+
+# client-side no load balancing - always the first greet-server is used.
+cnlb-greet-client:
+  imageRegistry: mrstefangrimm/greet-client
+  containerPort: 9091
+  GrpcGreetServerUrl: http://{{ .Release.Name }}-cnlb-greet-server:50051
+
 cnlb-greet-server:
   grpcServerPort: 50051
 
-cnlb-greet-client:
-  containerPort: 9091
-  grpcServerPort: 50051
+# client-side static load balancing - both greet-servers are used
+cslb-greet-client:
+  imageRegistry: mrstefangrimm/greet-client-cslb
+  containerPort: 9092
+  GrpcGreetServerUrl: static:///{{ .Release.Name }}-cslb-greet-server:50055
 
 cslb-greet-server1:
   grpcServerPort: 50052
   
 cslb-greet-server2:
   grpcServerPort: 50053
-  
+
+# client-side dynamic load balancing - all greet-servers are used
+cdlb-greet-client:
+  imageRegistry: mrstefangrimm/greet-client-cdlb
+  containerPort: 9094
+  GrpcGreetServerUrl: dns:///{{ .Release.Name }}-cdlb-greet-server:50054
+
 cdlb-greet-server:
   grpcServerPort: 50054
-  
-
-  
