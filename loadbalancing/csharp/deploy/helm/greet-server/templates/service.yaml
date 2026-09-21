@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "greet-server.fullname" . }}
+  labels:
+    app: {{ .Chart.Name }}
+    {{- include "greet-server.labels" . | nindent 4 }}
+spec:
+  ports:
+    - name: grpc
+      port: {{ .Values.grpcServerPort | default .Values.service.port }}
+      protocol: TCP
+      targetPort: {{ .Values.grpcServerPort | default .Values.service.port }}
+  selector:
+    {{- include "greet-server.selectorLabels" . | nindent 4 }}
+  clusterIP: None

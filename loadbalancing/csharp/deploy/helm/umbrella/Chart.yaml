@@ -1,0 +1,32 @@
+apiVersion: v2
+name: my-umbrella-chart
+version: 1.0.0
+dependencies:
+  - name: greet-server
+    version: "0.1.0"
+    repository: "file://../greet-server"
+    alias: cnlb-greet-server
+  - name: greet-server
+    version: "0.1.0"
+    repository: "file://../greet-server"
+    alias: cslb-greet-server1
+  - name: greet-server
+    version: "0.1.0"
+    repository: "file://../greet-server"
+    alias: cslb-greet-server2
+  - name: greet-server
+    version: "0.1.0"
+    repository: "file://../greet-server"
+    alias: cdlb-greet-server
+  - name: greet-client
+    version: "0.1.0"
+    repository: "file://../greet-client"
+    alias: cnlb-greet-client
+  - name: greet-client
+    version: "0.1.0"
+    repository: "file://../greet-client"
+    alias: cdlb-greet-client
+  - name: greet-client
+    version: "0.1.0"
+    repository: "file://../greet-client"
+    alias: cslb-greet-client
